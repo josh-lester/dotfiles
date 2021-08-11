@@ -1,0 +1,58 @@
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+[diff]
+    tool = default-difftool
+[difftool "default-difftool"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[core]
+	editor = code --wait
+	pager = cat
+[alias]
+	st = status
+	br = branch
+	branches = branch -a
+	delete = branch -D
+	co = checkout
+	ec = config --global -e
+    up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	cob = checkout -b
+	rename = branch -m
+	cm = !git add -A && git commit -m
+	save = !git add -A && commit -m 'SAVEPOINT'
+	wip = !git add -A && git commit -m "WIP"
+	undo = reset HEAD~1 --mixed
+	fuckit = reset origin/main --hard
+	amend = commit -a --amend
+	wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+	bclean = "!f() { git branch --merged ${1-main} | grep -v " ${1-main}$" | xargs git branch -D; }; f"
+    # Switches to specified branch (or main if no branch is specified), runs git up, then runs bclean.
+    bdone = "!f() { git checkout ${1-main} && git up && git bclean ${1-main}; }; f"
+	migrate = "!f(){ CURRENT=$(git symbolic-ref --short HEAD); git checkout -b $1 && git branch --force $CURRENT ${3-'$CURRENT@{u}'} && git rebase --onto ${2-main} $CURRENT; }; f"
+	open = !open `git config remote.origin.url`
+	browse = !git open
+	lol = log --graph --decorate --pretty=oneline --abbrev-commit
+	lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+	publish = !git push -u origin HEAD
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[init]
+	defaultBranch = main
