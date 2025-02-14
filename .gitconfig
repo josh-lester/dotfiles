@@ -56,3 +56,13 @@
 	required = true
 [init]
 	defaultBranch = main
+[user]
+	name = Josh Lester
+	email = 6409687+josh-lester@users.noreply.github.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ5nHyRw4YfxglKosfSY/8SM389CB691w2cchZKL1oym
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+[commit]
+	gpgsign = true
